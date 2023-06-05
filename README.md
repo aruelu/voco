@@ -1,5 +1,3 @@
-# 作成中のため、まだきちんと動作しません
-
 # voco
 
 ## volumio_contlrol
@@ -21,7 +19,10 @@ git clone https://github.com/aruelu/covo.git
 ./setup.sh
 ```
 
-## 設定ファイル。
+上記を実行後、再起動する。
+
+## 設定ファイル
+
 ```voco_init.py
 voco_init.py
 ```
@@ -119,27 +120,32 @@ DEVICE = "/dev/input/event2"
 #DEVICE = ('/dev/input/event3', '/dev/input/event2','/dev/input/event6')
 
 #ボタンとコマンドの関連付け
-CTL = (["prev",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,40,280,"",1],
-        ["volup",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,200,"",1],
-        ["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,160,-381,"",1],
-        ["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,-316,"",1],
-        ["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,-82,280,"",1],
-        ["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,10,-31,"",1],
-        ["voltog",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_M,"","","",1],
-        ["play",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_SPACE,"","","",1],
-        ["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1],
-        ["volup",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_UP,"","","",1],
-        ["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_DOWN,"","","",1],
-        ["next",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_RIGHT,"","","",1],
-        ["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_RIGHT,"","","",1],
-        ["prev",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_LEFT,"","","",1],
-        ["volup",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",1],
-        ["voldw",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",-1])
+CTL = []
+CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,40,280,"",1]) #BLE-M3左ボタン
+CTL.append(["volup",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,200,"",1]) #BLE-M3上ボタン
+CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,160,-381,"",1])#BLE-M3真ん中ボタン
+CTL.append(["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,-316,"",1])#BLE-M3下ボタン
+CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,-82,280,"",1])#BLE-M3右ボタン
+CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,10,-31,"",1])#BLE-M3シャッターボタン
+CTL.append(["voltog",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_M,"","","",1])#キーボード:m
+CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_SPACE,"","","",1])#キーボード:スペース
+CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1])#マウス:左ボタン
+CTL.append(["volup",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_UP,"","","",1])#キーボード:上矢印
+CTL.append(["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_DOWN,"","","",1])#キーボード:下矢印
+CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_RIGHT,"","","",1])#キーボード:右矢印
+CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_RIGHT,"","","",1])#マウス:右ボタン
+CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_LEFT,"","","",1])#キーボード:左矢印
+CTL.append(["volup",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",1])#マウスホイール:プラス
+CTL.append(["voldw",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",-1])#マウスホイール:マイナス
+CTL.append(["play",1,115,"","","",0])#BT Shutter（ダイソー）:両方のボタン
+CTL.append(["play",1,115,"","","",0])#CW Shutter（キャンドゥ）:両方のボタン
 ```
 
 
 
-キーボード、マウス、BLE-M3（bluetoothリモコン）を定義
+キーボード、マウス、BLE-M3（bluetoothリモコン）、１００均のリモコンシャッターを定義
 
 移動量の判別が必要な場合、判別が不要なものよりも先に定義しておく。
+
+１００均のリモコンシャッターは、２つのボタンが有るが、両方共に同じイベントのため判別は不可能。
 
