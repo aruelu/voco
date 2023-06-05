@@ -42,3 +42,4 @@ CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_LEFT,"","","",1])#キー
 CTL.append(["volup",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",1])#マウスホイール:プラス
 CTL.append(["voldw",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",-1])#マウスホイール:マイナス
 CTL.append(["play",1,115,"","","",0])#BT Shutter（ダイソー）:両方のボタン
+CTL.append(["play",1,115,"","","",0])#CW Shutter（キャンドゥ）:両方のボタン
