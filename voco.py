@@ -131,7 +131,7 @@ while True:
     for fd in r:
         for event in devices[fd].read():
             #if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
-            print(event)
+            #print(event)
             if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
                 print(event)
                 getREL(event)
