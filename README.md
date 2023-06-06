@@ -38,6 +38,12 @@ git clone https://github.com/aruelu/covo.git
 voco_init.py
 ```
 
+## ユーザ設定ファイル
+下記のファイルを優先して読み込みます
+```
+voco_usr_init.py
+```
+
 import evdev  
 
 DEVICE = "/dev/input/event2"

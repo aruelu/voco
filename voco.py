@@ -4,7 +4,15 @@ import subprocess
 import time
 import datetime
 from volumio_com import *
-from voco_init import *
+import os
+path = 'voco_usr_init.py'
+is_file = os.path.isfile(path)
+if is_file:
+    print(is_file)
+    from voco_usr_init import *
+else:
+    print(is_file)
+    from voco_init import *
 
 print(type(DEVICE))
 rel_x = 0
