@@ -14,7 +14,7 @@ else:
     print(is_file)
     from voco_init import *
 
-print(type(DEVICE))
+#print(type(DEVICE))
 rel_x = 0
 rel_y = 0
 rel_h = 0
