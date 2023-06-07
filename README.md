@@ -1,3 +1,6 @@
+# お願い
+すでにお使いの方は、setup.shを再実行して下さい
+
 # voco
 
 ## volumio_contlrol
