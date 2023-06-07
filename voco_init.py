@@ -1,6 +1,5 @@
 #volumioをbluetoothリモコンで操作するための設定ファイル
 #
-#DEVICE  デバイスを指定する（不要な物は記載しない）
 #
 #CTL　押されたボタンとコマンドの関連付け（必ず複数設定する）
 #[コマンド名,Type,Code,X移動量,Y移動量,H移動量,value]
@@ -19,9 +18,6 @@
 
 import evdev
 
-# デバイスの指定
-DEVICE = "/dev/input/event2"
-#DEVICE = ('/dev/input/event3', '/dev/input/event2','/dev/input/event6')
 
 #ボタンとコマンドの関連付け
 CTL = []

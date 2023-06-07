@@ -46,7 +46,7 @@ voco_usr_init.py
 
 import evdev  
 
-DEVICE = "/dev/input/event2"
+~~DEVICE = "/dev/input/event2"~~
 
 [コマンド名,Type,Code,X移動量,Y移動量,H移動量,value]
 
@@ -54,11 +54,14 @@ DEVICE = "/dev/input/event2"
 
 ## 設定内容
 
-### DEVICE
+~~### DEVICE~~
 
-デバイスファイル名を指定する（不要な物は記載しない）
+~~デバイスファイル名を指定する（不要な物は記載しない）~~
 
-指定したデバイスの準備が完了（/dev/以下のファイルが生成）するまで、プログラムは待機する。
+~~指定したデバイスの準備が完了（/dev/以下のファイルが生成）するまで、プログラムは待機する。~~
+
+デバイスの設定は不要（設定されていても無視されます）に変更しました。
+全てのデバイスを対象にします。
 
 ### CTL
 
@@ -132,10 +135,6 @@ BLE-M3の場合、直前のXY移動量によりボタンの判別が可能
 ```
 import evdev
 
-# デバイスの指定
-DEVICE = "/dev/input/event2"
-#DEVICE = ('/dev/input/event3', '/dev/input/event2','/dev/input/event6')
-
 #ボタンとコマンドの関連付け
 CTL = []
 CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,40,280,"",1]) #BLE-M3左ボタン
@@ -179,4 +178,9 @@ CTLの設定をタプルからリストの配列に変更しました（コメ�
 個別に確認した方が確実です。
 ```
 python3 ./multi_dev.py
+```
+
+全てのデバイスのイベントを同時に確認したい場合、下記の方が便利です。
+```
+python3 ./all_dev.py
 ```

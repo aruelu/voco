@@ -14,7 +14,7 @@ else:
     print(is_file)
     from voco_init import *
 
-print(type(DEVICE))
+#print(type(DEVICE))
 rel_x = 0
 rel_y = 0
 rel_h = 0
@@ -112,43 +112,28 @@ def inputCTL():
 
 
 print(f"#----------voco start---{datetime.datetime.now()}---------")
-if isinstance(DEVICE, tuple): 
+from select import select
+DEVICE = []
 
-    for i in DEVICE:
-        str_cmd = ["ls",i]
-        result = subprocess.run(str_cmd)
-        print(result.returncode)
-        while int(result.returncode):
-            time.sleep(10)
-            result = subprocess.run(str_cmd)
+import glob
 
+for name in glob.glob('/dev/input/event*'):
+    print(name)
+    DEVICE.append(name)
 
-    devices = map(evdev.InputDevice, DEVICE)
-    devices = {dev.fd: dev for dev in devices}
+devices = map(evdev.InputDevice, DEVICE)
+devices = {dev.fd: dev for dev in devices}
 
-    for dev in devices.values(): print(dev)
+for dev in devices.values(): print(dev)
 
-    while True:
-        r, w, x = select(devices, [], [])
-        for fd in r:
-            for event in devices[fd].read():
-                if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
-                    print(event)
-                    getREL(event)
-                    print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
-                    inputCTL() 
-else:
-    str_cmd = ["ls",DEVICE]
-    result = subprocess.run(str_cmd)
-    print(result.returncode)
-    while int(result.returncode):
-        time.sleep(10)
-        result = subprocess.run(str_cmd)
-    device = evdev.InputDevice(DEVICE)
-    print(device)
-    for event in device.read_loop():
-        if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
-            print(event)
-            getREL(event)
-            print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
-            inputCTL() 
+while True:
+    r, w, x = select(devices, [], [])
+    for fd in r:
+        for event in devices[fd].read():
+            #if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
+            #print(event)
+            if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
+                print(event)
+                getREL(event)
+                print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
+                inputCTL() 
