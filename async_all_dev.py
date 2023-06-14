@@ -4,7 +4,9 @@ import asyncio
 async def handle_events(device):
     async for event in device.async_read_loop():
             print("==============================")
-            print(device.name)
+            print("name:",device.name)
+            print("vendor_id:",device.info.vendor)
+            print("product_id:",device.info.product)
             print(event)
 
 async def watch_devices():
