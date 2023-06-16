@@ -73,8 +73,6 @@ def inputCTL(event,device):
             print(x)
             print(f"type = {intType}")
             print(f"code = {intCode}")
-            print(f"vender = {device.info.vendor}")
-            print(f"product = {device.info.product}")
             print(strCmd)
             if strCmd == "prev":
                 prev()
@@ -137,6 +135,8 @@ async def handle_events(device):
         if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
             print("==============================")
             print(device.name)
+            print(f"vendorID = {device.info.vendor}")
+            print(f"productID = {device.info.product}")
             print(event)
             getREL(event)
             print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
