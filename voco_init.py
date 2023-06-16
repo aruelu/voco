@@ -32,7 +32,7 @@ CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,-82,280,"",1])#BLE-
 CTL.append(["voltog",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_M,"","","",1])#キーボード:m
 CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_SPACE,"","","",1])#キーボード:スペース
 #CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1])#マウス:左ボタン
-CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1,1390,""])#マウス:左ボタン
+CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1,1390,""])#マウス:左ボタン（エレコム）
 CTL.append(["volup",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_UP,"","","",1])#キーボード:上矢印
 CTL.append(["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_DOWN,"","","",1])#キーボード:下矢印
 CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_RIGHT,"","","",1])#キーボード:右矢印
