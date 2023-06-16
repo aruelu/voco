@@ -53,7 +53,7 @@ import evdev
 
 ~~DEVICE = "/dev/input/event2"~~
 
-[コマンド名,Type,Code,X移動量,Y移動量,H移動量,value]
+CTL.append([コマンド名,Type,Code,X移動量,Y移動量,H移動量,value,vendor_ID,product_ID])
 
 
 
@@ -72,7 +72,9 @@ import evdev
 
 押されたボタンとコマンドの関連付け（必ず複数設定する）
 
-[コマンド名,Type,Code,X移動量,Y移動量,H移動量,value]
+CTL.append([コマンド名,Type,Code,X移動量,Y移動量,H移動量,value,vendor_ID,product_ID])
+
+#### ※vendor_ID,product_IDは定義が無くても動くように互換性を保ってます
 
 ### コマンド名
 
@@ -127,7 +129,11 @@ BLE-M3の場合、直前のXY移動量によりボタンの判別が可能
 
    - 移動量
 
-  
+### vendor_ID
+ベンダーID　指定しない場合は""
+
+### product_ID
+プロダクトID　指定しない場合は""
 
 ### 定数は、include/uapi/linux/input-event-codes.hを参照
 
@@ -140,17 +146,21 @@ BLE-M3の場合、直前のXY移動量によりボタンの判別が可能
 ```
 import evdev
 
+
 #ボタンとコマンドの関連付け
 CTL = []
+CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_VOLUMEUP,"","","",1,3589,2560])#BLE-M3シャッターボタン
+CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_VOLUMEDOWN,"","","",1,3589,2560])#BLE-M3シャッターボタン
 CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,40,280,"",1]) #BLE-M3左ボタン
 CTL.append(["volup",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,200,"",1]) #BLE-M3上ボタン
 CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,160,-381,"",1])#BLE-M3真ん中ボタン
 CTL.append(["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,-316,"",1])#BLE-M3下ボタン
 CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,-82,280,"",1])#BLE-M3右ボタン
-CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,10,-31,"",1])#BLE-M3シャッターボタン
+#CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,10,-31,"",1])#BLE-M3シャッターボタン
 CTL.append(["voltog",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_M,"","","",1])#キーボード:m
 CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_SPACE,"","","",1])#キーボード:スペース
-CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1])#マウス:左ボタン
+#CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1])#マウス:左ボタン
+CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,"","","",1,1390,""])#マウス:左ボタン（エレコム）
 CTL.append(["volup",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_UP,"","","",1])#キーボード:上矢印
 CTL.append(["voldw",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_DOWN,"","","",1])#キーボード:下矢印
 CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_RIGHT,"","","",1])#キーボード:右矢印
@@ -158,8 +168,9 @@ CTL.append(["next",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_RIGHT,"","","",1])#マ�
 CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_LEFT,"","","",1])#キーボード:左矢印
 CTL.append(["volup",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",1])#マウスホイール:プラス
 CTL.append(["voldw",evdev.ecodes.EV_REL,evdev.ecodes.REL_WHEEL,"","","",-1])#マウスホイール:マイナス
-CTL.append(["play",1,115,"","","",0])#BT Shutter（ダイソー）:両方のボタン
-CTL.append(["play",1,115,"","","",0])#CW Shutter（キャンドゥ）:両方のボタン
+#CTL.append(["play",1,115,"","","",0])#BT Shutter（ダイソー）:両方のボタン
+#CTL.append(["play",1,115,"","","",0])#CW Shutter（キャンドゥ）:両方のボタン
+CTL.append(["play",1,115,"","","",0,9354,33382])#CW Shutter（キャンドゥ）CW Shutter（キャンドゥ）:両方のボタン
 ```
 
 
@@ -171,6 +182,9 @@ CTL.append(["play",1,115,"","","",0])#CW Shutter（キャンドゥ）:両方の�
 １００均のリモコンシャッターは、２つのボタンが有るが、両方共に同じイベントのため判別は不可能。
 販売の時期によっては判別可能かもしれません。
 BT Shutter（ダイソー）とCW Shutter（キャンドゥ）は同じイベントのため、外観は違いますが製造元は一緒かもしれません。
+
+デバイスを特定するため、BLE-M3、１００均のリモコンシャッター、マウスにベンダーID、プロダクトIDを追加しました。
+BLE-M3を接続していない場合、マウスのベンダーIDは不要です。
 
 CTLの設定をタプルからリストの配列に変更しました（コメントを記載できるようにするため）。
 
