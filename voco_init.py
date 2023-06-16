@@ -2,7 +2,7 @@
 #
 #
 #CTL　押されたボタンとコマンドの関連付け（必ず複数設定する）
-#[コマンド名,Type,Code,X移動量,Y移動量,H移動量,value]
+#[コマンド名,Type,Code,X移動量,Y移動量,H移動量,value,vendor_ID,product_ID]
 #
 #コマンド名：prev volup play voldw next shutdown voltog
 #Type：evdev.ecodes.EV_KEY evdev.ecodes.EV_REL etc
@@ -13,6 +13,10 @@
 #                           BLE-M3の場合、直前のXY移動量によりボタンの判別が可能
 #
 #value： ボタンの場合1:down 0:up マウスイベントの場合の移動量
+#
+#vend0r_ID：ベンダーID　指定なしの場合、""
+#
+#product_ID：プロダクトID　指定なしの場合、""
 #
 #定数は、include/uapi/linux/input-event-codes.hを参照
 
