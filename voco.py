@@ -11,9 +11,11 @@ is_file = os.path.isfile(path)
 if is_file:
     print(is_file)
     from voco_usr_init import *
+    print("import voco_usr_init")
 else:
     print(is_file)
     from voco_init import *
+    print("import voco_init")
 
 print(f"#----------voco start---{datetime.datetime.now()}---------")
 
@@ -68,6 +70,11 @@ def inputCTL(event,device):
             intPID = device.info.product
 
         if event.type == intType and event.code == intCode and rel_x == intX and rel_y == intY and rel_h == intH and event.value == intValue and intVID == device.info.vendor and intPID == device.info.product:
+            print(x)
+            print(f"type = {intType}")
+            print(f"code = {intCode}")
+            print(f"vender = {device.info.vendor}")
+            print(f"product = {device.info.product}")
             print(strCmd)
             if strCmd == "prev":
                 prev()
