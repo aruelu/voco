@@ -191,5 +191,5 @@ sudo python3 ./all_dev.py
 ```
 プラグアンドプレイ対応版
 ```
-sudo python3 async_all_dev.py
+sudo python3 ./async_all_dev.py
 ```
