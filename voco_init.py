@@ -22,6 +22,7 @@ import evdev
 #ボタンとコマンドの関連付け
 CTL = []
 CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_VOLUMEUP,"","","",1,3589,2560])#BLE-M3シャッターボタン
+CTL.append(["shutdown",evdev.ecodes.EV_KEY,evdev.ecodes.KEY_VOLUMEDOWN,"","","",1,3589,2560])#BLE-M3シャッターボタン
 CTL.append(["prev",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,40,280,"",1]) #BLE-M3左ボタン
 CTL.append(["volup",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,60,200,"",1]) #BLE-M3上ボタン
 CTL.append(["play",evdev.ecodes.EV_KEY,evdev.ecodes.BTN_LEFT,160,-381,"",1])#BLE-M3真ん中ボタン
