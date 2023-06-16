@@ -5,6 +5,7 @@ import time
 import datetime
 from volumio_com import *
 import os
+import asyncio
 path = 'voco_usr_init.py'
 is_file = os.path.isfile(path)
 if is_file:
@@ -14,7 +15,8 @@ else:
     print(is_file)
     from voco_init import *
 
-#print(type(DEVICE))
+print(f"#----------voco start---{datetime.datetime.now()}---------")
+
 rel_x = 0
 rel_y = 0
 rel_h = 0
@@ -34,7 +36,7 @@ def getREL(self):
         elif self.code == evdev.ecodes.REL_WHEEL:
             rel_h = self.value
 
-def inputCTL():
+def inputCTL(event):
     global sd_cnt
     global s_time
     global e_time
@@ -110,30 +112,44 @@ def inputCTL():
                     sd_cnt += 1
             break #forを抜ける
 
+async def handle_events(device):
+    async for event in device.async_read_loop():
+        if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
+            print("==============================")
+            print(device.name)
+            print(event)
+            getREL(event)
+            print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
+            inputCTL(event) 
 
-print(f"#----------voco start---{datetime.datetime.now()}---------")
-from select import select
-DEVICE = []
+async def watch_devices():
+    devices = set(evdev.list_devices())
+    for device_path in devices:
+        device = evdev.InputDevice(device_path)
+        asyncio.create_task(handle_events(device))
+        print("Device added:", device_path,device.name)
 
-import glob
+    while True:
+        new_devices = set(evdev.list_devices())
+        added_devices = new_devices - devices
+        removed_devices = devices - new_devices
 
-for name in glob.glob('/dev/input/event*'):
-    print(name)
-    DEVICE.append(name)
+        for device_path in added_devices:
+            device = evdev.InputDevice(device_path)
+            asyncio.create_task(handle_events(device))
+            print("Device added:", device_path,device.name)
 
-devices = map(evdev.InputDevice, DEVICE)
-devices = {dev.fd: dev for dev in devices}
+        for device_path in removed_devices:
+            # 削除されたデバイスに対する処理を追加する
+            print("Device removed:", device_path)
 
-for dev in devices.values(): print(dev)
+        devices = new_devices
 
-while True:
-    r, w, x = select(devices, [], [])
-    for fd in r:
-        for event in devices[fd].read():
-            #if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
-            #print(event)
-            if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
-                print(event)
-                getREL(event)
-                print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
-                inputCTL() 
+        # イベントの取得を待つ
+        await asyncio.sleep(1)
+
+async def main():
+    await watch_devices()
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())

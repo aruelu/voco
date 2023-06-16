@@ -3,6 +3,8 @@
 sudo apt update
 sudo apt install -y python3-pip
 sudo pip3 install evdev
+sudo pip3 install asyncio
+
 
 sudo rm -f /etc/rc1.d/S01run_voco.sh
 sudo rm -f /etc/rc2.d/S01run_voco.sh
