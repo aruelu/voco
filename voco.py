@@ -11,9 +11,11 @@ is_file = os.path.isfile(path)
 if is_file:
     print(is_file)
     from voco_usr_init import *
+    print("import voco_usr_init")
 else:
     print(is_file)
     from voco_init import *
+    print("import voco_init")
 
 print(f"#----------voco start---{datetime.datetime.now()}---------")
 
@@ -36,7 +38,7 @@ def getREL(self):
         elif self.code == evdev.ecodes.REL_WHEEL:
             rel_h = self.value
 
-def inputCTL(event):
+def inputCTL(event,device):
     global sd_cnt
     global s_time
     global e_time
@@ -48,13 +50,29 @@ def inputCTL(event):
         intY = x[4]
         intH = x[5]
         intValue = x[6]
+        if len(x) <= 7:
+            intVID = ""
+            intPID = ""
+        else:
+            intVID = x[7]
+            intPID = x[8]
+
         if intX == "":
            intX = rel_x
         if intY == "":
            intY = rel_y
         if intH == "":
            intH = rel_h
-        if event.type == intType and event.code == intCode and rel_x == intX and rel_y == intY and rel_h == intH and event.value == intValue :
+
+        if intVID == "":
+            intVID = device.info.vendor
+        if intPID == "":
+            intPID = device.info.product
+
+        if event.type == intType and event.code == intCode and rel_x == intX and rel_y == intY and rel_h == intH and event.value == intValue and intVID == device.info.vendor and intPID == device.info.product:
+            print(x)
+            print(f"type = {intType}")
+            print(f"code = {intCode}")
             print(strCmd)
             if strCmd == "prev":
                 prev()
@@ -117,10 +135,12 @@ async def handle_events(device):
         if event.type == evdev.ecodes.EV_KEY or event.type == evdev.ecodes.EV_REL:
             print("==============================")
             print(device.name)
+            print(f"vendorID = {device.info.vendor}")
+            print(f"productID = {device.info.product}")
             print(event)
             getREL(event)
             print(f"rel_x={rel_x} rel_y={rel_y} rel_h={rel_h}")
-            inputCTL(event) 
+            inputCTL(event,device) 
 
 async def watch_devices():
     devices = set(evdev.list_devices())
